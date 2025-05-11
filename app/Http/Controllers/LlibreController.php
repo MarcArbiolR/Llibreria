@@ -8,6 +8,8 @@ use App\Models\Category;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
+use function Laravel\Prompts\alert;
+
 class LlibreController extends Controller
 {
     public function index(Request $request)
@@ -56,6 +58,39 @@ class LlibreController extends Controller
         return view('crud.edit', compact('llibre', 'categories')); // Assegura't de tenir una vista 'llibre.edit'
 
     }
+
+
+
+    public function update(Request $request, $id)
+    {
+        // Validació de les dades
+        $validated = $request->validate([
+            'titol' => 'required|string|max:255',
+            'autor' => 'required|string|max:255',
+            'resum' => 'required|string',
+            'data_publicacio' => 'required|date',
+            'preu' => 'required|numeric|min:0',
+            'edat_minima' => 'required|integer|min:0',
+            'categoria_id' => 'required|integer|exists:categories,id',
+            'imatge' => 'nullable|string|max:2048',
+        ]);
+
+        // Buscar el llibre per ID
+        $llibre = Llibre::findOrFail($id);
+
+        // Actualitzar el llibre
+        $llibre->update($validated);
+
+        // Obtenir la categoria per mostrar-la si cal
+        $categoria = Category::findOrFail($llibre->categoria_id);
+
+
+        // Redirigir o retornar una vista amb el llibre actualitzat
+        return redirect()
+            ->route('crud.show', $llibre->id)
+            ->with('success', 'Llibre actualitzat correctament');
+    }
+
 
     public function show($id)
     {

@@ -76,7 +76,8 @@
                     <div class="btn-group" role="group" aria-label="Accions del llibre">
                         @if (Auth::user()->email == 'admin@admin.es')
                             <!-- Editar el llibre -->
-                            <a href="{{ url('/llibre/edit/' . $llibre->id) }}" class="llibre-btn edit me-2" style="margin-right: 20px;">
+                            <a href="{{ url('/llibre/edit/' . $llibre->id) }}" class="llibre-btn edit me-2"
+                                style="margin-right: 20px;">
                                 Editar el llibre
                             </a>
 
@@ -85,12 +86,14 @@
                                 onsubmit="return confirm('Vols eliminar el llibre?');" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="llibre-btn delete me-2" style="margin-right: 20px;">Eliminar</button>
+                                <button type="submit" class="llibre-btn delete me-2"
+                                    style="margin-right: 20px;">Eliminar</button>
                             </form>
                         @endif
 
                         <!-- Afegir una valoració -->
-                        <a href="{{ url('/valoracio/create/' . $llibre->id) }}" class="llibre-btn rate me-2" style="margin-right: 20px;">
+                        <a href="{{ url('/valoracio/create/' . $llibre->id) }}" class="llibre-btn rate me-2"
+                            style="margin-right: 20px;">
                             Afegir una valoració
                         </a>
 
@@ -123,4 +126,10 @@
             </div>
         </div>
     </div>
+    @if(session('success'))
+        <script>
+            alert('{{ session('success') }}');
+        </script>
+    @endif
+
 @endsection
