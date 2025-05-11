@@ -13,7 +13,7 @@
             <li class="list-group-item"><strong>Preu:</strong> {{ $newLlibre->preu }}</li>
             <li class="list-group-item"><strong>Edat mínima:</strong> {{ $newLlibre->edat_minima }}</li>
             <li class="list-group-item">
-                <strong>Categoria:</strong> {{ $newLlibre->categoria ? $newLlibre->categoria->name : 'Sense categoria' }}
+                <strong>Categoria:</strong> {{ $categoria->name }}
             </li>
             <li class="list-group-item"><strong>Imatge:</strong> <img src="{{ $newLlibre->imatge }}" alt="Imatge"
                     width="200"></li>

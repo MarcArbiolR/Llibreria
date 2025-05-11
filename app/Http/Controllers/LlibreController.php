@@ -84,7 +84,7 @@ class LlibreController extends Controller
             'data_publicacio' => 'required|date',
             'preu' => 'required|numeric|min:0',
             'edat_minima' => 'required|integer|min:0',
-            'categoria_id' => 'required|exists:categories,id', // Validació que existeixi la categoria
+            'categoria_id' => 'required|integer|exists:categories,id',
             'imatge' => 'nullable|string|max:2048',
         ]);
 
@@ -100,7 +100,9 @@ class LlibreController extends Controller
             'imatge' => $request->imatge,
         ]);
 
+        $categoria = Category::findOrFail($newLlibre->categoria_id); // Obtenim la categoria associada al llibre.
+
         // Redirigir a la vista amb el llibre creat
-        return view('crud.new', compact('newLlibre'));
+        return view('crud.new', compact('newLlibre', 'categoria'));
     }
 }
