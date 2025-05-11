@@ -1,0 +1,22 @@
+@extends('layouts.master')
+
+@section('title', 'Llibre creat')
+
+@section('content')
+    <div class="container py-5">
+        <h2>El llibre ha estat creat amb èxit!</h2>
+        <ul class="list-group">
+            <li class="list-group-item"><strong>Títol:</strong> {{ $newLlibre->titol }}</li>
+            <li class="list-group-item"><strong>Autor:</strong> {{ $newLlibre->autor }}</li>
+            <li class="list-group-item"><strong>Resum:</strong> {{ $newLlibre->resum }}</li>
+            <li class="list-group-item"><strong>Data de publicació:</strong> {{ $newLlibre->data_publicacio }}</li>
+            <li class="list-group-item"><strong>Preu:</strong> {{ $newLlibre->preu }}</li>
+            <li class="list-group-item"><strong>Edat mínima:</strong> {{ $newLlibre->edat_minima }}</li>
+            <li class="list-group-item">
+                <strong>Categoria:</strong> {{ $newLlibre->categoria ? $newLlibre->categoria->name : 'Sense categoria' }}
+            </li>
+            <li class="list-group-item"><strong>Imatge:</strong> <img src="{{ $newLlibre->imatge }}" alt="Imatge"
+                    width="200"></li>
+        </ul>
+    </div>
+@endsection
