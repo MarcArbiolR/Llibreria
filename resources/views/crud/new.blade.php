@@ -17,6 +17,11 @@
             </li>
             <li class="list-group-item"><strong>Imatge:</strong> <img src="{{ $newLlibre->imatge }}" alt="Imatge"
                     width="200"></li>
+            <li>
+                <a href="{{ url('/llibres') }}" class="btn btn-outline-primary btn-lg">
+                    <i class="bi bi-arrow-left"></i> Tornar al llistat
+                </a>
+            </li>
         </ul>
     </div>
 @endsection

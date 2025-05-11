@@ -18,7 +18,7 @@
                 @php
                     $mitjana = $llibre->valoracions->avg(fn($u) => $u->pivot->nota);
                 @endphp
-                <div class="col-xs-6 col-sm-4 col-md-3 text-center llibre-card">
+                <div class="col text-center llibre-card">
                     <a href="{{ route('crud.show', $llibre->id) }}">
                         <img src="{{$llibre->imatge }}" style="height:200px" />
                         <h4 style="min-height:45px;margin:5px 0 10px 0" id="titol">
@@ -36,17 +36,16 @@
                     </a>
                 </div>
             @else
-                <div class="col-xs-6 col-sm-4 col-md-3 text-center llibre-card">
+                <div class="col-3 text-center llibre-card">
                     <img src="{{$llibre->imatge }}" style="height:200px" />
                     <h4 style="min-height:45px;margin:5px 0 10px 0" id="titol"> No es pot accedir al llibre:
                         {{$llibre->titol }}
                     </h4>
-
                 </div>
             @endif
-
         @endforeach
     </div>
+
 
     <!-- Paginación -->
     <div class="links">
@@ -107,5 +106,15 @@
     /* Efecte visual de la targeta */
     .llibre-card:hover .nota-mitjana {
         color: #d35400;
+    }
+
+    .row {
+        margin-left: -10px;
+        margin-right: -10px;
+    }
+
+    .llibre-card {
+        margin-bottom: 20px;
+        /* Afegir espai entre les files de llibres */
     }
 </style>
