@@ -139,7 +139,7 @@
     @endif
 
     <div class="overlay">
-        <h1>Biblioteca Llum de Paraules</h1>
+        <h1>Biblioteca de Batea</h1>
         <p class="subtitle">Endinsa't en un univers de llibres, coneixement i creativitat. La teva biblioteca digital de
             confiança.</p>
 
