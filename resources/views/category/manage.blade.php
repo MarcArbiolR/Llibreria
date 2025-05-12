@@ -5,7 +5,7 @@
 @section('content')
 
     <div class="container py-5">
-        <h1 class="text-center mb-4">Cataleg de Categories</h1>
+        <h1 class="text-center mb-4">Gestió de Categories</h1>
 
         <div class="row">
             @if($categories->isEmpty())
@@ -22,6 +22,15 @@
                                         {{ $category->name }}
                                     </h4>
                                 </a>
+                                <form action="{{ route('category.delete', $category->id) }}" method="POST" class="mt-3">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Segur que vols eliminar aquesta categoria?')">
+                                        Elimina
+                                    </button>
+                                </form>
+                                
                             </div>
                         </div>
                     </div>
