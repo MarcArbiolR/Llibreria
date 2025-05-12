@@ -47,7 +47,7 @@ Route::middleware('auth')->group(function () {
 
         // Rutes per a les categories.
         // Ruta per veure les categories.
-        Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
+        Route::get('/categories/gestio', [CategoryController::class, 'manage'])->name('category.manage');
 
         // Ruta per mostrar una categoria.
         Route::get('/category/show/{id}', [CategoryController::class, 'show'])->name('category.show');

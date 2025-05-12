@@ -3,16 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Llibre;
+use App\Models\categoria;
 use App\Models\Category;
 
 class CategoryController extends Controller
 {
-    public function index(Request $request)
+    public function manage(Request $request)
     {
         $query = Category::orderBy('name'); // Ordenem les categories per nom
-        $category = $query->paginate(5)->appends($request->query()); // Paginació de 5 categories per pàgina
-        return view('crud.index', compact('category')); // Assegura't de tenir una vista 'llibre.index'
+        $categories = $query->paginate(10); // Paginació de 5 categories per pàgina
+        return view('category.manage', compact('categories')); // Retorna la vista
     }
 
     public function create()
@@ -47,32 +47,35 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = Category::findOrFail($id); // Troba la categoria per ID o llança un error 404
-        return view('llibre.edit', compact('category')); // Assegura't de tenir una vista 'llibre.edit'
+        return view('category.edit', compact('category')); // Assegura't de tenir una vista 'categoria.edit'
     }
 
     public function update(Request $request, $id)
     {
-        // Valida les dades del formulari
-        $request->validate([
-            'nom' => 'required|string|max:255',
-            'descripcio' => 'required|string|max:255',
-            'autor' => 'required|string|max:200',
-            'any_publicacio' => 'required|integer|min:1900|max:' . date('Y'), // Validació de l'any de publicació
-            'preu' => 'required|numeric|min:0', // Validació del preu
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
         ]);
 
-        // Troba la categoria per ID i actualitza les dades
-        $category = Category::findOrFail($id);
-        $category->update($request->all());
+        $categoria = Category::findOrFail($id);
 
-        // Redirigeix a la llista de categories amb un missatge d'èxit
-        return view('category.update', compact('category')); // Assegura't de tenir una vista 'llibre.update'
+        try {
+            $categoria->update($validated);
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('category.edit', $id) // <- redirigeix cap a "edit"
+                ->with('error', 'Aquest nom de categoria ja existeix.');
+        }
+
+        return redirect()
+            ->route('category.manage')
+            ->with('success', 'Categoria actualitzada correctament.');
     }
+
 
     public function delete($id)
     {
-        $category = Category::findOrFail($id); // Troba la categoria per ID o llança un error 404
-        $category->delete(); // Elimina la categoria
-        return redirect()->route('category.index')->with('success', 'Categoria eliminada correctament!'); // Redirigeix a la llista de categories amb un missatge d'èxit
+        $category = Category::findOrFail($id);
+        $category->delete();
+        return redirect()->route('category.index');
     }
 }

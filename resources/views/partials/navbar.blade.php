@@ -56,8 +56,8 @@
                                     href="{{ url('/category/create') }}">
                                     <span>&#10010;</span> Nova categoria
                                 </a>
-                                <a class="dropdown-item {{ Request::is('category/manage') ? 'active' : ''}}"
-                                    href="{{ url('/category/manage') }}">
+                                <a class="dropdown-item {{ Request::is('/categories/gestio') ? 'active' : ''}}"
+                                    href="{{ url('/categories/gestio') }}">
                                     <span>&#9881;</span> Gestionar categories
                                 </a>
                             </div>
