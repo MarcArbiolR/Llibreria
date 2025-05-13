@@ -3,6 +3,7 @@
 use App\Http\Controllers\LlibreController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ValoracionsController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Llibre;
 
@@ -27,6 +28,9 @@ Route::middleware('auth')->group(function () {
     // Ruta per veure un llibre.
     Route::get('/llibre/show/{id}', [LlibreController::class, 'show'])->name('crud.show')->middleware('edat');
 
+    // Ruta per crear les valoracions d'un llibre.
+    Route::get('/valoracions/create/{llibre}/{usuari}', [ValoracionsController::class, 'create']);
+    Route::post('/valoracions/new', [ValoracionsController::class, 'new'])->name('valoracions.new');
 
     Route::middleware(['auth', 'admin'])->group(function () {
         // Rutes per als llibres.   

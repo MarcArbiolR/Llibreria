@@ -91,9 +91,8 @@
                             </form>
                         @endif
 
-                        <!-- Afegir una valoració -->
-                        <a href="{{ url('/valoracio/create/' . $llibre->id) }}" class="llibre-btn rate me-2"
-                            style="margin-right: 20px;">
+                        <a href="{{ url('/valoracions/create/' . $llibre->id . '/' . auth()->user()->id) }}"
+                            class="llibre-btn rate me-2" style="margin-right: 20px;">
                             Afegir una valoració
                         </a>
 
