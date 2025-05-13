@@ -60,6 +60,10 @@
                                     href="{{ url('/categories/gestio') }}">
                                     <span>&#9881;</span> Gestionar categories
                                 </a>
+                                <a class="dropdown-item {{ Request::is('/categories/gestio') ? 'active' : ''}}"
+                                    href="{{ url('/users/gestio') }}">
+                                    <span>&#9881;</span> Gestió d'usuaris
+                                </a>
                             </div>
                         </div>
                     @endif

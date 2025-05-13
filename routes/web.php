@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ValoracionsController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Llibre;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     $llibreDestacat = Llibre::inRandomOrder()->first();
@@ -70,6 +71,22 @@ Route::middleware('auth')->group(function () {
 
         // Ruta per eliminar una categoria.
         Route::delete('/category/delete/{id}', [CategoryController::class, 'delete'])->name('category.delete');
+
+        // Rutes per a la gestió d'usuaris.
+        
+        // Ruta per crear un nou usuari.
+        Route::get('/user/create', [UserController::class, 'create'])->name('users.create');
+        // Ruta per mostrar el formulari de creació d'un nou usuari.
+        Route::post('/user/new', [UserController::class, 'new'])->name('users.new');
+        // Ruta per veure els usuaris.
+        Route::get('/users/gestio', [UserController::class, 'manage'])->name('users.manage');
+        // Ruta per editar un usuari.
+        Route::get('/user/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
+        // Ruta per mostrar el formulari d'edició d'un usuari.
+        Route::put('/user/update/{id}', [UserController::class, 'update'])->name('users.update');
+        // Ruta per eliminar un usuari.
+        Route::delete('/user/delete/{id}', [UserController::class, 'delete'])->name('users.delete');
+
     });
 });
 
