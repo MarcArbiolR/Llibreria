@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete; // Referència a la taula users
             $table->foreignId('llibre_id')->references('id')->on('llibre')->cascadeOnDelete; // Referència a la taula llibres
-            $table->integer('nota')->default(0); // Nota assignada pel llibre
+            $table->integer('nota')->default(0)->max(10); // Nota assignada pel llibre
             $table->text('valoracio')->nullable(); // Comentari sobre el llibre
             $table->timestamps();
         });

@@ -5,162 +5,228 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca Llum de Paraules</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Open+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            background-image: url("img/Fons.jpg");
-            font-family: 'Georgia', serif;
+            font-family: 'Open Sans', sans-serif;
             color: #fff;
-            text-align: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background-attachment: fixed;
         }
 
-        .overlay {
-            background-color: rgba(0, 0, 0, 0.6);
+        .navbar {
+            background: rgba(0, 0, 0, 0.9) !important;
+            padding: 1rem 2rem;
+        }
+
+        .navbar-brand {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            color: #ffd700 !important;
+        }
+
+        .nav-link,
+        .btn-nav {
+            color: #fff !important;
+            font-size: 1rem;
+            margin-left: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .btn-nav {
+            background: #ffd700;
+            color: #000 !important;
+            border: none;
+        }
+
+        .nav-link:hover,
+        .btn-nav:hover {
+            background: #ffd700;
+            color: #000 !important;
+        }
+
+        .hero-section {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 4rem 0;
             min-height: 100vh;
-            padding: 4rem 1rem;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            align-items: center;
         }
 
         h1 {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 3.5rem;
+            color: #ffd700;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            animation: fadeInDown 1s ease;
         }
 
-        p.subtitle {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+        .subtitle {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 1rem auto 2rem;
+            color: #e0e0e0;
+            animation: fadeInUp 1s ease 0.3s;
+            animation-fill-mode: both;
         }
 
         .book-button {
-            width: 140px;
-            height: 200px;
+            width: 160px;
+            height: 220px;
             background-size: cover;
-            border: none;
-            color: #fff;
-            font-weight: bold;
-            font-size: 1rem;
-            text-shadow: 1px 1px 2px #000;
+            background-position: center;
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 10px;
+            text-align: center;
             text-decoration: none;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-shadow: 1px 1px 3px #000;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            transition: background 0.3s ease;
+        }
+
+        .book-button:hover::before {
+            background: rgba(0, 0, 0, 0.2);
         }
 
         .book-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 10px #fff;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.5);
         }
 
-        .main-content {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .left-section {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            margin-top: 25px;
-        }
-
-        .buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            margin-bottom: 2rem;
-        }
-
-        .right-section {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-width: 300px;
-        }
-
-        .login-register-blocks {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            align-items: stretch;
-            margin-bottom: 2rem;
-        }
-
-        .login-register-block.large {
-            width: 250px;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            text-align: center;
-            background-color: #fff;
-            color: black;
-            border-radius: 10px;
-            box-shadow: 0px 14px 34px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .login-register-block.large img {
+        .login-register-card {
             width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 10px;
+            max-width: 250px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+            color: #333;
+            margin: 0 auto;
         }
 
-        .login-register-block.large:hover {
+        .login-register-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            text-decoration: underline;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-register-card .card-body p {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .login-register-card .card-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: #ffd700;
+            font-size: 1.2rem;
         }
 
         .library-info {
-            background-color: white;
-            color: black;
+            background: #fff;
+            color: #333;
             padding: 2rem;
-            border-radius: 10px;
-            margin-top: 2rem;
-            text-align: left;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 1s ease 0.5s;
+            animation-fill-mode: both;
+        }
+
+        .library-info h2 {
+            font-family: 'Poppins', sans-serif;
+            color: #1a1a2e;
+            margin-bottom: 1rem;
         }
 
         footer {
             margin-top: 3rem;
             font-size: 0.9rem;
             color: #ccc;
+            text-align: center;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @media (max-width: 768px) {
-            .main-content {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .book-button {
+                width: 240px;
+                height: 220px;
+            }
+
+            .login-register-card {
+                max-width: 280px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
                 flex-direction: column;
-                align-items: center;
+                gap: 1rem;
             }
 
-            .left-section,
-            .right-section {
-                flex: unset;
-                width: 100%;
-                justify-content: center;
+            .navbar-brand {
+                font-size: 1.5rem;
             }
 
-            .buttons {
-                justify-content: center;
+            h1 {
+                font-size: 2rem;
             }
         }
     </style>
@@ -172,84 +238,103 @@
             alert("{{ session('error') }}");
         </script>
     @endif
-    <nav
-        style="background-color: rgba(0,0,0,0.8); padding: 1rem; display: flex; justify-content: space-between; align-items: center;">
-        <div style="font-size: 1.5rem; color: white; font-weight: bold;">
-            Biblioteca de Batea
-        </div>
 
-        @auth
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit"
-                    style="background-color: #fff; color: black; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer;">
-                    Tanca sessió ({{ Auth::user()->name }})
-                </button>
-            </form>
-        @else
-            <div>
-                <a href="/login" style="color: white; margin-right: 1rem;">Login</a>
-                <a href="/register" style="color: white;">Register</a>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Biblioteca de Batea</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                @auth
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="btn-nav">
+                            <i class="fas fa-sign-out-alt"></i> Tanca sessió ({{ Auth::user()->name }})
+                        </button>
+                    </form>
+                @else
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/register"><i class="fas fa-user-plus"></i> Register</a>
+                        </li>
+                    </ul>
+                @endauth
             </div>
-        @endauth
+        </div>
     </nav>
 
-    <div class="overlay">
-        <h1>Biblioteca de Batea</h1>
-        <p class="subtitle">Endinsa't en un univers de llibres, coneixement i creativitat. La teva biblioteca digital de
-            confiança.</p>
+    <div class="hero-section">
+        <div class="container">
+            <h1 class="text-center">Biblioteca de Batea</h1>
+            <p class="subtitle text-center">Endinsa't en un univers de llibres, coneixement i creativitat. La teva
+                biblioteca digital de confiança.</p>
 
-        <div class="main-content">
-            <div class="left-section">
-                <div class="buttons">
-                    <a href="{{ route('crud.index') }}" class="book-button"
-                        style="background-image: url(img/Categories.jpg); background-size: 400px auto;">Llibres</a>
+            <div class="row g-4">
+                <!-- Botons de llibres -->
+                <div class="col-lg-6 d-flex justify-content-center">
+                    <div class="d-flex flex-wrap gap-3 justify-content-center">
+                        <a href="{{ route('crud.index') }}" class="book-button"
+                            style="background-image: url(img/Categories.jpg);">Llibres</a>
+                        @if (Auth::check('auth') && Auth::user()->email === 'admin@admin.es')
+                            <a href="{{ route('category.manage') }}" class="book-button"
+                                style="background-image: url(img/Categories.jpg);">Categories</a>
+                        @endif
+                        @if ($llibreDestacat)
+                            <a href="{{ route('crud.show', ['id' => $llibreDestacat->id]) }}" class="book-button"
+                                style="background: url('{{ $backgroundImage }}'); background-size: cover;">Llibre
+                                destacat</a>
+                        @endif
+                    </div>
+                </div>
 
-                    @if (Auth::check('auth') && Auth::user()->email === 'admin@admin.es')
-                        <a href="{{ route('category.manage') }}" class="book-button"
-                            style="background-image: url(img/Categories.jpg); background-size: 400px auto;">Categories</a>
-                    @endif
-
-                    @if ($llibreDestacat)
-                        <a href="{{ route('crud.show', ['id' => $llibreDestacat->id]) }}" class="book-button"
-                            style="background: url('{{ $backgroundImage }}'); background-size: 140px auto;">
-                            Llibre destacat
+                <!-- Blocs de login/register -->
+                <div class="col-lg-6 d-flex justify-content-center">
+                    <div class="d-flex flex-column gap-3 align-items-center">
+                        <a href="/login" class="login-link">
+                            <div class="login-register-card card">
+                                <div class="card-body">
+                                    <p>Ja tens un compte? Logeja't aquí!</p>
+                                    <h5 class="card-title">Logeja't</h5>
+                                </div>
+                            </div>
                         </a>
-                    @endif
+                        <a href="/register" class="register-link">
+                            <div class="login-register-card card">
+                                <div class="card-body">
+                                    <p>No tens compte? Registra't ara!</p>
+                                    <h5 class="card-title">Registra't</h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Informació de la biblioteca -->
+                <div class="col-12">
+                    <div class="library-info" >
+                        <h2 class="text-center">Sobre la Biblioteca</h2>
+                        <p>La Biblioteca Llum de Paraules és un lloc on podràs explorar una gran varietat de llibres
+                            digitals, des de clàssics fins a novetats. El nostre objectiu és proporcionar-te accés fàcil
+                            a un món de coneixement i creativitat. Si t'agrada llegir, aquí trobaràs el teu refugi.</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="right-section">
-                <div class="login-register-blocks">
-                    <a href="/login" class="login-link">
-                        <div class="login-register-block large">
-                            <p>Ja tens un compte? Logeja't aquí!</p>
-                            <img src="{{ asset('img/login.png') }}" alt="Login">
-                            <span>Logeja't</span>
-                        </div>
-                    </a>
-                    <a href="/register" class="register-link">
-                        <div class="login-register-block large">
-                            <p>No tens compte? Registra't ara!</p>
-                            <img src="{{ asset('img/register.jpg') }}" alt="Register">
-                            <span>Registra't</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
+            <footer class="mt-5">
+                © {{ date('Y') }} Biblioteca Llum de Paraules · On cada llibre és una nova aventura
+            </footer>
         </div>
-
-        <div class="library-info">
-            <h2 style="text-align: center">Sobre la Biblioteca</h2>
-            <p>La Biblioteca Llum de Paraules és un lloc on podràs explorar una gran varietat de llibres digitals, des
-                de clàssics fins a novetats. El nostre objectiu és proporcionar-te accés fàcil a un món de coneixement i
-                creativitat. Si t'agrada llegir, aquí trobaràs el teu refugi.</p>
-        </div>
-
-        <footer>
-            &copy; {{ date('Y') }} Biblioteca Llum de Paraules · On cada llibre és una nova aventura
-        </footer>
     </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

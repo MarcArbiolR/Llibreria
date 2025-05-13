@@ -29,7 +29,6 @@ Route::middleware('auth')->group(function () {
     // Ruta per veure un llibre.
     Route::get('/llibre/show/{id}', [LlibreController::class, 'show'])->name('crud.show')->middleware('edat');
 
-    // Ruta per crear les valoracions d'un llibre.
     Route::get('/valoracions/create/{llibre}/{usuari}', [ValoracionsController::class, 'create']);
     Route::post('/valoracions/new', [ValoracionsController::class, 'new'])->name('valoracions.new');
 
@@ -73,7 +72,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/category/delete/{id}', [CategoryController::class, 'delete'])->name('category.delete');
 
         // Rutes per a la gestió d'usuaris.
-        
+
         // Ruta per crear un nou usuari.
         Route::get('/user/create', [UserController::class, 'create'])->name('users.create');
         // Ruta per mostrar el formulari de creació d'un nou usuari.
@@ -86,7 +85,6 @@ Route::middleware('auth')->group(function () {
         Route::put('/user/update/{id}', [UserController::class, 'update'])->name('users.update');
         // Ruta per eliminar un usuari.
         Route::delete('/user/delete/{id}', [UserController::class, 'delete'])->name('users.delete');
-
     });
 });
 

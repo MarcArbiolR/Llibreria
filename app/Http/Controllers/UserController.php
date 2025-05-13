@@ -27,20 +27,27 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users'),
+            ],
             'password' => 'required|string|min:8|confirmed',
-            'data_naixement' => 'required|date|before:today',
+            'data_naixement' => 'required|date',
         ]);
 
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'data_naixement' => $validated['data_naixement'],
-        ]);
+        $user = new User();
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        if (!empty($validated['password'])) {
+            $user->password = Hash::make($validated['password']);
+        }
+        $user->data_naixement = $validated['data_naixement'];
+        $user->save();
 
-        return view('users.creat', ['user' => $user]);
+        return redirect()->route('users.manage')->with('success', 'Usuari creat correctament.');
     }
+
 
     // Formulari d'edició
     public function edit($id)
@@ -87,6 +94,6 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return redirect()->route('users.manage');
+        return redirect()->route('users.manage')->with('success', 'Usuari eliminat correctament.');
     }
 }

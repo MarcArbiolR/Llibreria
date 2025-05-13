@@ -1,37 +1,69 @@
 @extends('layouts.master')
 
+@section('title', 'Crear Usuari')
+
 @section('content')
-    <div class="container">
-        <h1>Crear Usuari</h1>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header text-center">
+                        <h2>Alta de nou usuari</h2>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('users.new') }}" method="POST">
+                            @csrf
 
-        <form action="{{ route('users.new') }}" method="POST">
-            @csrf
-            <div class="mb-3">
-                <label for="name" class="form-label">Nom</label>
-                <input type="text" class="form-control" id="name" name="name" required>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label"><strong>Nom</strong></label>
+                                    <input type="text" class="form-control" id="name" name="name"
+                                        value="{{ old('name') }}" required>
+                                    @error('name')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label"><strong>Correu electrònic</strong></label>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        value="{{ old('email') }}" required>
+                                    @error('email')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="password" class="form-label"><strong>Contrasenya</strong></label>
+                                    <input type="password" class="form-control" id="password" name="password" required>
+                                    @error('password')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="password_confirmation" class="form-label"><strong>Confirmar contrasenya</strong></label>
+                                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="data_naixement" class="form-label"><strong>Data de naixement</strong></label>
+                                    <input type="date" class="form-control" id="data_naixement" name="data_naixement"
+                                        value="{{ old('data_naixement') }}" required>
+                                    @error('data_naixement')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-12 text-center mt-4">
+                                    <button type="submit" class="btn btn-primary px-4 py-2">Crear usuari</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
             </div>
-
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="password" class="form-label">Contrasenya</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="password_confirmation" class="form-label">Confirmar Contrasenya</label>
-                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="data_naixement" class="form-label">Data de Naixement</label>
-                <input type="date" class="form-control" id="data_naixement" name="data_naixement" required>
-            </div>
-
-            <button type="submit" class="btn btn-success">Crear Usuari</button>
-        </form>
+        </div>
     </div>
 @endsection
