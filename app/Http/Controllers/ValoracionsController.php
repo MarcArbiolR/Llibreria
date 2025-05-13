@@ -22,17 +22,17 @@ class ValoracionsController extends Controller
         // Validació de les dades rebudes
         $validated = $request->validate([
             'user_id' => 'required|integer|exists:users,id',
-            'llibre_id' => 'required|integer|exists:llibres,id',
+            'llibre_id' => 'required|integer|exists:llibre,id',
             'nota' => 'required|integer|min:1|max:5',
             'valoracio' => 'required|string|max:1000',
         ]);
 
         // Desar la valoració a la base de dades
         \App\Models\Valoracio::create([
-            'usuari_id' => $validated['user_id'],
+            'user_id' => $validated['user_id'],
             'llibre_id' => $validated['llibre_id'],
-            'puntuacio' => $validated['nota'],
-            'comentari' => $validated['valoracio'],
+            'nota' => $validated['nota'],
+            'valoracio' => $validated['valoracio'],
         ]);
 
         // Redirecció a la vista del llibre concret
