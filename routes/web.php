@@ -15,6 +15,8 @@ Route::get('/', function () {
         'backgroundImage' => $llibreDestacat?->imatge ?? null
     ]);
 });
+Route::get('/registar', [UserController::class, 'registar'])->name('users.register');
+Route::post('/registat', [UserController::class, 'registrat'])->name('users.registrat');
 
 
 Route::get('/dashboard', function () {
@@ -72,9 +74,9 @@ Route::middleware('auth')->group(function () {
         Route::delete('/category/delete/{id}', [CategoryController::class, 'delete'])->name('category.delete');
 
         // Rutes per a la gestió d'usuaris.
+        Route::get('/user/create', [UserController::class, 'create'])->name('users.create');
 
         // Ruta per crear un nou usuari.
-        Route::get('/user/create', [UserController::class, 'create'])->name('users.create');
         // Ruta per mostrar el formulari de creació d'un nou usuari.
         Route::post('/user/new', [UserController::class, 'new'])->name('users.new');
         // Ruta per veure els usuaris.

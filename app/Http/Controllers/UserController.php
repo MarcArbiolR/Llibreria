@@ -9,6 +9,37 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
+
+    // Registre d'usuari
+    public function registar()
+    {
+        return view('users.register');
+    }
+    // Desar un nou usuari
+    public function registrat(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users'),
+            ],
+            'password' => 'required|string|min:8|confirmed',
+            'data_naixement' => 'required|date',
+        ]);
+
+        $user = new User();
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        if (!empty($validated['password'])) {
+            $user->password = Hash::make($validated['password']);
+        }
+        $user->data_naixement = $validated['data_naixement'];
+        $user->save();
+
+        return redirect()->route('login')->with('success', 'Usuari creat correctament.');
+    }
     // Llista d'usuaris
     public function manage()
     {

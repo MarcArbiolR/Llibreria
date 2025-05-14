@@ -260,7 +260,7 @@
                             <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/register"><i class="fas fa-user-plus"></i> Register</a>
+                            <a class="nav-link" href="/registar"><i class="fas fa-user-plus"></i> Register</a>
                         </li>
                     </ul>
                 @endauth
@@ -294,20 +294,20 @@
 
                 <!-- Blocs de login/register -->
                 <div class="col-lg-6 d-flex justify-content-center">
-                    <div class="d-flex flex-column gap-3 align-items-center">
-                        <a href="/login" class="login-link">
-                            <div class="login-register-card card">
-                                <div class="card-body">
-                                    <p>Ja tens un compte? Logeja't aquí!</p>
-                                    <h5 class="card-title">Logeja't</h5>
+                    <div class="d-flex flex-row gap-3 align-items-center">
+                        <a href="/login" class="login-link text-decoration-none">
+                            <div class="login-register-card card shadow-sm" style="border: 2px solid #ffd700;">
+                                <div class="card-body text-center" style="width: 200px;">
+                                    <p class="mb-2">Ja tens un compte? Logeja't aquí!</p>
+                                    <h5 class="card-title" style="color: #ffd700;">Logeja't</h5>
                                 </div>
                             </div>
                         </a>
-                        <a href="/register" class="register-link">
-                            <div class="login-register-card card">
-                                <div class="card-body">
-                                    <p>No tens compte? Registra't ara!</p>
-                                    <h5 class="card-title">Registra't</h5>
+                        <a href="/register" class="register-link text-decoration-none">
+                            <div class="login-register-card card shadow-sm" style="border: 2px solid #ffd700;">
+                                <div class="card-body text-center" style="width: 200px;">
+                                    <p class="mb-2">No tens compte? Registra't ara!</p>
+                                    <h5 class="card-title" style="color: #ffd700;">Registra't</h5>
                                 </div>
                             </div>
                         </a>
@@ -316,7 +316,7 @@
 
                 <!-- Informació de la biblioteca -->
                 <div class="col-12">
-                    <div class="library-info" >
+                    <div class="library-info">
                         <h2 class="text-center">Sobre la Biblioteca</h2>
                         <p>La Biblioteca Llum de Paraules és un lloc on podràs explorar una gran varietat de llibres
                             digitals, des de clàssics fins a novetats. El nostre objectiu és proporcionar-te accés fàcil
