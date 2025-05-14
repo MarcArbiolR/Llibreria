@@ -28,4 +28,13 @@ class Llibre extends Model
             ->withPivot('nota', 'valoracio')
             ->withTimestamps();
     }
+    /**
+     * Relació: usuaris que han valorat aquest llibre.
+     */
+    public function llibresValorats()
+    {
+        return $this->belongsToMany(User::class, 'llibre_user')
+            ->withPivot('nota', 'valoracio', 'created_at')
+            ->withTimestamps();
+    }   
 }

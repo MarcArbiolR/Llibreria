@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Llibre;
 use App\Models\Valoracio;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ValoracionsController extends Controller
@@ -14,6 +14,16 @@ class ValoracionsController extends Controller
         // Comprovem que l'usuari autenticat coincideixi amb l'usuariId
         if (Auth::id() != $usuariId) {
             return redirect()->back()->with('error', 'No tens permís per valorar aquest llibre.');
+        }
+
+        // Comprovar si l'usuari ja ha valorat aquest llibre
+        $hasValoracio = Valoracio::where('user_id', $usuariId)
+            ->where('llibre_id', $llibreId)
+            ->exists();
+
+        if ($hasValoracio) {
+            return redirect()->route('crud.show', $llibreId)
+                ->with('error', 'No pots crear una nova valoració perquè ja n\'has fet una.');
         }
 
         // Recuperem el llibre amb l'ID passat
@@ -30,11 +40,21 @@ class ValoracionsController extends Controller
             return redirect()->back()->with('error', 'No pots crear una valoració per a un altre usuari.');
         }
 
+        // Comprovar si l'usuari ja ha valorat aquest llibre
+        $hasValoracio = Valoracio::where('user_id', $request->input('user_id'))
+            ->where('llibre_id', $request->input('llibre_id'))
+            ->exists();
+
+        if ($hasValoracio) {
+            return redirect()->route('crud.show', $request->input('llibre_id'))
+                ->with('error', 'No pots crear una nova valoració perquè ja n\'has fet una.');
+        }
+
         // Validació de les dades rebudes
         $validated = $request->validate([
             'user_id' => 'required|integer|exists:users,id',
             'llibre_id' => 'required|integer|exists:llibre,id',
-            'nota' => 'required|integer|min:1|max:10', // Canviat a màxim 10
+            'nota' => 'required|integer|min:1|max:10',
             'valoracio' => 'required|string|max:1000',
         ]);
 
@@ -47,7 +67,7 @@ class ValoracionsController extends Controller
         ]);
 
         // Redirecció a la vista del llibre concret
-        return redirect()->route('crud.show', ['id' => $validated['llibre_id']])
+        return redirect()->route('crud.show', $validated['llibre_id'])
             ->with('success', 'Valoració creada correctament!');
     }
 }

@@ -7,6 +7,7 @@ use App\Models\Llibre;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Valoracio;
 
 use function Laravel\Prompts\alert;
 
@@ -94,11 +95,16 @@ class LlibreController extends Controller
 
     public function show($id)
     {
-        $llibre = Llibre::with('category')->findOrFail($id); // Obtenim el llibre per ID
-        $categoria = Category::findOrFail($llibre->categoria_id); // Obtenim la categoria associada al llibre.
-        $valoracio = $llibre->valoracions()->where('user_id')->first(); // Obtenim la valoració de l'usuari autenticat.
+        // Carreguem el llibre amb les seves valoracions i la categoria
+        $llibre = Llibre::with(['llibresValorats', 'category'])->findOrFail($id);
+        $categoria = Category::findOrFail($llibre->categoria_id);
 
-        return view('crud.show', compact('llibre', 'categoria', 'valoracio')); // Assegura't de tenir una vista 'llibre.show'
+        // Comprovar si l'usuari autenticat ha valorat el llibre
+        $hasValoracio = Auth::check() && $llibre->llibresValorats()
+            ->where('user_id', Auth::id())
+            ->exists();
+
+        return view('crud.show', compact('llibre', 'categoria', 'hasValoracio'));
     }
     public function delete($id)
     {
