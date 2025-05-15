@@ -16,12 +16,14 @@
                 <strong>Categoria:</strong> {{ $categoria->name }}
             </li>
             <li class="list-group-item"><strong>Imatge:</strong> <img src="{{ $newLlibre->imatge }}" alt="Imatge"
-                    width="200"></li>
-            <li>
-                <a href="{{ url('/llibres') }}" class="btn btn-outline-primary btn-lg">
-                    <i class="bi bi-arrow-left"></i> Tornar al llistat
-                </a>
-            </li>
+                    width="200"></li> <br>
+            <a href="{{ url('/llibres') }}" class="btn btn-outline-primary btn-lg">
+                <i class="bi bi-arrow-left"></i> Tornar al llistat
+            </a> <br>
+            <a href="{{ url('/llibre/create') }}" class="btn btn-outline-primary btn-lg">
+                <i class="bi bi-arrow-left"></i> Crear un nou llibre
+            </a>
+
         </ul>
     </div>
 @endsection

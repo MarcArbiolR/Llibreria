@@ -18,14 +18,10 @@
                 @php
                     $mitjana = $llibre->valoracions->avg(fn($u) => $u->pivot->nota);
                 @endphp
-                <div class="col text-center llibre-card">
+                <div class="llibre-card">
                     <a href="{{ route('crud.show', $llibre->id) }}">
-                        <img src="{{$llibre->imatge }}" style="height:200px" />
-                        <h4 style="min-height:45px;margin:5px 0 10px 0" id="titol">
-                            {{$llibre->titol }}
-                        </h4>
-
-                        <!-- Mostrar la mitjana de valoracions amb estil -->
+                        <img src="{{ $llibre->imatge }}" alt="{{ $llibre->titol }}" />
+                        <h4 id="titol">{{ $llibre->titol }}</h4>
                         <div class="valoracio-mitjana">
                             @if ($mitjana)
                                 <p class="nota-mitjana">Nota mitjana: <strong>{{ number_format($mitjana, 1) }}/10</strong></p>
@@ -36,11 +32,9 @@
                     </a>
                 </div>
             @else
-                <div class="col-3 text-center llibre-card">
-                    <img src="{{$llibre->imatge }}" style="height:200px" />
-                    <h4 style="min-height:45px;margin:5px 0 10px 0" id="titol"> No es pot accedir al llibre:
-                        {{$llibre->titol }}
-                    </h4>
+                <div class="llibre-card">
+                    <img src="{{ $llibre->imatge }}" alt="{{ $llibre->titol }}" />
+                    <h4 id="titol">No es pot accedir al llibre: {{ $llibre->titol }}</h4>
                 </div>
             @endif
         @endforeach
@@ -56,17 +50,28 @@
 
 <style>
     /* Estils generals per a la targeta dels llibres */
-    #titol {
-        padding-top: 20px;
-    }
-
+    /* Estils generals per a la targeta dels llibres */
     .llibre-card {
         border: 1px solid #ddd;
-        padding: 10px;
+        padding: 15px;
         margin: 10px;
         text-align: center;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         border-radius: 8px;
+        width: 250px;
+        /* Amplada fixa */
+        height: 360px;
+        /* Alçada fixa */
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        /* Comença des de dalt */
+        align-items: center;
+        /* Centra horitzontalment */
+        box-sizing: border-box;
+        /* Inclou padding i border en la mida */
+        overflow: hidden;
+        /* Evita desbordaments */
     }
 
     .llibre-card:hover {
@@ -74,47 +79,70 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
-    .llibre-card h4 {
-        color: black;
-    }
-
     .llibre-card img {
         border-radius: 5px;
-        max-width: 100%;
-        height: auto;
+        width: 100%;
+        /* Ocupa l'amplada disponible */
+        height: 200px;
+        /* Alçada ajustada per encaixar a la targeta */
+        object-fit: contain;
+        /* Mostra la imatge completa sense retallar */
+        margin-bottom: 10px;
+        /* Espai sota la imatge */
+        background-color: #f5f5f5;
+        /* Fons per si la imatge és més petita */
     }
 
-    /* Estil per la mitjana de valoracions */
+    .llibre-card h4 {
+        color: black;
+        font-size: 16px;
+        margin: 0 0 10px 0;
+        min-height: 40px;
+        /* Alçada mínima per consistència */
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        /* Limita a 2 línies */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 20px;
+        /* Alçada de línia per consistència */
+    }
+
     .valoracio-mitjana {
-        padding-top: 10px;
-        padding-bottom: 2px;
+        font-size: 14px;
+        min-height: 40px;
+        /* Alçada fixa per a la valoració */
+        display: flex;
+        align-items: center;
+        /* Centra verticalment */
+        justify-content: center;
+        width: 100%;
     }
 
-    /* Nota mitjana destacada */
     .nota-mitjana {
         color: #f39c12;
         font-size: 16px;
         font-weight: bold;
+        margin: 0;
     }
 
-    /* Estils per quan no hi ha valoracions */
     .valoracio-mitjana p.text-muted {
         font-size: 14px;
         color: #7f8c8d;
+        margin: 0;
     }
 
-    /* Efecte visual de la targeta */
     .llibre-card:hover .nota-mitjana {
         color: #d35400;
     }
 
     .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        /* Centra les targetes */
         margin-left: -10px;
         margin-right: -10px;
-    }
-
-    .llibre-card {
-        margin-bottom: 20px;
-        /* Afegir espai entre les files de llibres */
     }
 </style>

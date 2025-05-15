@@ -37,7 +37,7 @@ class LlibreController extends Controller
         $edat = $user->edat;
         $dataNaixement = $user->data_naixement;
 
-        $llibres = $query->paginate(12);
+        $llibres = $query->paginate(8);
 
         return view('crud.index', compact('llibres', 'category', 'dataNaixement', 'edat'));
     }

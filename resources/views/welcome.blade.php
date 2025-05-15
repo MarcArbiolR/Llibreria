@@ -303,7 +303,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a href="/register" class="register-link text-decoration-none">
+                        <a href="/registar" class="register-link text-decoration-none">
                             <div class="login-register-card card shadow-sm" style="border: 2px solid #ffd700;">
                                 <div class="card-body text-center" style="width: 200px;">
                                     <p class="mb-2">No tens compte? Registra't ara!</p>
