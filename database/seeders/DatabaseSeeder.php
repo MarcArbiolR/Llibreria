@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,17 +15,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Desactivar restriccions de claus foranes
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        // Desactivar restriccions de claus foranes de manera segura
+        Schema::disableForeignKeyConstraints();
 
         // Truncar totes les taules
-        DB::table('llibre_user')->truncate();
-        DB::table('llibre')->truncate();
-        DB::table('users')->truncate();
-        DB::table('categories')->truncate();
+        DB::table('llibre_user')->delete();
+        DB::table('llibre')->delete();
+        DB::table('users')->delete();
+        DB::table('categories')->delete();
 
-        // Reactivar restriccions de claus foranes
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        // Reactivar restriccions
+        Schema::enableForeignKeyConstraints();
+
 
         // Cridar les funcions de seeding
         $this->seedCategories();
@@ -37,35 +40,35 @@ class DatabaseSeeder extends Seeder
     }
 
     private function seedUsers()
-{
-    // Crear usuaris de prova
-    DB::table('users')->insert([
-        [
-            'name' => 'Admin',
-            'email' => 'admin@admin.es',
-            'password' => Hash::make('admin1234'),
-            'data_naixement' => '2006-05-10',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ],
-        [
-            'name' => 'Usuari',
-            'email' => 'user@example.com',
-            'password' => Hash::make('password123'),
-            'data_naixement' => '2020-05-03',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ],
-        [
-            'name' => 'Usuari2',
-            'email' => 'usuari2@example.com',
-            'password' => Hash::make('password123'),
-            'data_naixement' => '2012-01-11',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ],
-    ]);
-}
+    {
+        // Crear usuaris de prova
+        DB::table('users')->insert([
+            [
+                'name' => 'Admin',
+                'email' => 'admin@admin.es',
+                'password' => Hash::make('admin1234'),
+                'data_naixement' => '2006-05-10',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Usuari',
+                'email' => 'user@example.com',
+                'password' => Hash::make('password123'),
+                'data_naixement' => '2020-05-03',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Usuari2',
+                'email' => 'usuari2@example.com',
+                'password' => Hash::make('password123'),
+                'data_naixement' => '2012-01-11',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
+    }
 
 
     private function seedCategories()
@@ -106,7 +109,7 @@ class DatabaseSeeder extends Seeder
                 'preu' => 29.99,
                 'imatge' => 'https://www.elpuntavui.cat/imatges/59/43/alta/780_0008_5943159_2e3835441f750e34a96aeef363245c5b.jpg',
                 'edat_minima' => 12,
-                'categoria_id' => 1, 
+                'categoria_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -118,7 +121,7 @@ class DatabaseSeeder extends Seeder
                 'preu' => 19.99,
                 'imatge' => 'https://m.media-amazon.com/images/I/61i4k7DWNFL._AC_UF1000,1000_QL80_.jpg',
                 'edat_minima' => 16,
-                'categoria_id' => 2, 
+                'categoria_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
