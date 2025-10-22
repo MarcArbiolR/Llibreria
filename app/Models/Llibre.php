@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Llibre extends Model
 {
+    use HasFactory;
     protected $table = 'llibre'; // Nom de la taula a la base de dades
     protected $fillable = [
         'titol',
