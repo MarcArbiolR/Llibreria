@@ -101,7 +101,17 @@ class ValoracionsController extends Controller
     public function destroy($id)
     {
         try {
-            $deleted = DB::table('llibre_user')->where('id', $id)->delete();
+            $valoracio = Valoracio::findOrFail($id);
+            
+            // Verificar que el usuario autenticado es el propietario de la valoración
+            if (Auth::id() != $valoracio->user_id) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'No tienes permiso para eliminar esta valoración'
+                ], 403);
+            }
+            
+            $deleted = $valoracio->delete();
             
             if ($deleted) {
                 return response()->json([
