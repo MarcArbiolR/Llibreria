@@ -11,10 +11,13 @@ class Valoracio extends Model
     protected $table = 'llibre_user'; // Nom de la taula a la base de dades
 
     protected $fillable = [
+        'id',
         'user_id',
         'llibre_id',
         'nota',
         'valoracio',
+        'created_at',
+        'updated_at'
     ];
 
     // Relació amb l'usuari

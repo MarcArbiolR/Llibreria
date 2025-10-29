@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/valoracions/create/{llibre}/{usuari}', [ValoracionsController::class, 'create']);
     Route::post('/valoracions/new', [ValoracionsController::class, 'new'])->name('valoracions.new');
+    Route::delete('/valoracions/destroy/{id}', [ValoracionsController::class, 'destroy'])->name('valoracions.destroy');
 
     Route::middleware(['auth', 'admin'])->group(function () {
         // Rutes per als llibres.   

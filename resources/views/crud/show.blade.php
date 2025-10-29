@@ -51,8 +51,36 @@
                         @endif
 
                         @if (Auth::check() && !$hasValoracio)
-                            <a href="{{ url('/valoracions/create/' . $llibre->id . '/' . auth()->user()->id) }}"
-                                class="llibre-btn rate me-3" style="margin-right: 20px">Afegir una valoració</a>
+                            <button onclick="mostrarFormulariValoracio()" class="llibre-btn rate me-3" style="margin-right: 20px">
+                                Afegir una valoració
+                            </button>
+                            <!-- Modal para la valoración -->
+                            <div class="modal fade" id="valoracioModal" tabindex="-1" aria-labelledby="valoracioModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="valoracioModalLabel">Nova Valoració</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="valoracioForm" onsubmit="enviarValoracio(event)">
+                                                @csrf
+                                                <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                                                <input type="hidden" name="llibre_id" value="{{ $llibre->id }}">
+                                                <div class="mb-3">
+                                                    <label for="nota" class="form-label">Nota (1-10)</label>
+                                                    <input type=" number" class="form-control" id="nota" name="nota" min="1" max="10" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="valoracio" class="form-label">Valoració</label>
+                                                    <textarea class="form-control" id="valoracio" name="valoracio" rows="3" maxlength="1000" required></textarea>
+                                                </div>
+                                                <button type="submit" class="llibre-btn rate">Enviar Valoració</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         @elseif (Auth::check())
                             <button class="llibre-btn rate me-3 disabled" disabled style="margin-right: 20px">Ja has valorat
                                 aquest llibre</button>
@@ -67,31 +95,181 @@
             <div class="col-12 mt-5">
                 <div class="card p-4 shadow-sm llibre-card-valoracions">
                     <h3 class="mb-4 llibre-section-title">Valoracions</h3>
-                    @forelse ($llibre->llibresValorats as $usuari)
-                        @php
-                            $estrelles = round($usuari->pivot->nota / 2); // Converteix nota (0-10) a estrelles (0-5)
-                        @endphp
-                        <div class="mb-3 border-bottom pb-3 valoracio-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <strong>{{ $usuari->name }}</strong>
-                                    <span class="text-muted"> - {{ $usuari->pivot->created_at->format('d/m/Y') }}</span>
+                    <div id="valoracions-container">
+                        @forelse ($llibre->llibresValorats as $usuari)
+                            @php
+                                $estrelles = round($usuari->pivot->nota / 2);
+                                // Debug del ID de la valoración
+                                echo "<!-- Debug valoracio ID: " . $usuari->pivot->id . " -->";
+                            @endphp
+                            <div class="mb-3 border-bottom pb-3 valoracio-item" id="valoracio-{{ $usuari->pivot->id }}">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>{{ $usuari->name }}</strong>
+                                        <span class="text-muted"> - {{ $usuari->pivot->created_at->format('d/m/Y') }}</span>
+                                    </div>
+                                    <div class="d-flex align-items-center" style="gap: 1.5rem;">
+                                        <div class="estrelles" style="margin-right: 1.5rem;">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <span class="estrella {{ $i <= $estrelles ? 'filled' : '' }}">★</span>
+                                            @endfor
+                                        </div>
+                                        @if(Auth::id() == $usuari->id)
+                                            @if($usuari->pivot && $usuari->pivot->id)
+                                                <button onclick="eliminarValoracio('{{ $usuari->pivot->id }}')" 
+                                                        class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-trash"></i> Eliminar valoració
+                                                </button>
+                                            @endif
+                                        @endif
+                                    </div>
                                 </div>
-                                <div class="estrelles">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        <span class="estrella {{ $i <= $estrelles ? 'filled' : '' }}">★</span>
-                                    @endfor
-                                </div>
+                                <p class="mt-2">{{ $usuari->pivot->valoracio }}</p>
                             </div>
-                            <p class="mt-2">{{ $usuari->pivot->valoracio }}</p>
-                        </div>
-                    @empty
-                        <p class="text-muted">Encara no hi ha valoracions.</p>
-                    @endforelse
+                        @empty
+                            <p class="text-muted" id="no-valoracions">Encara no hi ha valoracions.</p>
+                        @endforelse
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        function mostrarFormulariValoracio() {
+            const modal = new bootstrap.Modal(document.getElementById('valoracioModal'));
+            modal.show();
+        }
+
+        function crearEstrelles(cantidad) {
+            let estrellas = '';
+            for (let i = 1; i <= 5; i++) {
+                estrellas += `<span class="estrella ${i <= cantidad ? 'filled' : ''}">★</span>`;
+            }
+            return estrellas;
+        }
+
+        function afegirValoracio(valoracio) {
+            const container = document.getElementById('valoracions-container');
+            const noValoracionsMsg = document.getElementById('no-valoracions');
+            if (noValoracionsMsg) {
+                noValoracionsMsg.remove();
+            }
+
+            console.log('Creant valoració amb ID:', valoracio.id); // Debug
+            const html = `
+                <div class="mb-3 border-bottom pb-3 valoracio-item" id="valoracio-${valoracio.id}">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>${valoracio.userName}</strong>
+                            <span class="text-muted"> - ${valoracio.data}</span>
+                        </div>
+                        <div class="d-flex align-items-center" style="gap: 1.5rem;">
+                            <div class="estrelles" style="margin-right: 1.5rem;">
+                                ${crearEstrelles(valoracio.estrelles)}
+                            </div>
+                            <button type="button" onclick="eliminarValoracio(${valoracio.id})" class="btn btn-sm btn-danger">
+                                <i class="fas fa-trash"></i> Eliminar valoració
+                            </button>
+                        </div>
+                    </div>
+                    <p class="mt-2">${valoracio.text}</p>
+                </div>
+            `;
+
+            container.insertAdjacentHTML('afterbegin', html);
+        }
+
+        function enviarValoracio(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const formData = new FormData(form);
+
+            fetch('{{ route("valoracions.new") }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    afegirValoracio(data.valoracio);
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('valoracioModal'));
+                    modal.hide();
+                    form.reset();
+                    
+                    // Deshabilitar el botón de añadir valoración
+                    const btnValoracio = document.querySelector('button[onclick="mostrarFormulariValoracio()"]');
+                    btnValoracio.className = 'llibre-btn rate me-3 disabled';
+                    btnValoracio.disabled = true;
+                    btnValoracio.textContent = 'Ja has valorat aquest llibre';
+                    btnValoracio.onclick = null;
+                } else {
+                    alert(data.error || 'Hi ha hagut un error en crear la valoració');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Valoració feta!');
+            });
+        }
+
+        function eliminarValoracio(id) {
+            if (!id) {
+                console.error('ID no válido:', id);
+                alert('Error: ID de valoració no válid');
+                return;
+            }
+
+            if (!confirm('Estàs segur que vols eliminar aquesta valoració?')) {
+                return;
+            }
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            
+            console.log('Eliminant valoració amb ID:', id); // Para debug
+
+            fetch(`/valoracions/destroy/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const valoracio = document.getElementById(`valoracio-${id}`);
+                    valoracio.remove();
+
+                    // Habilitar el botón de añadir valoración
+                    const btnValoracio = document.querySelector('button[onclick="mostrarFormulariValoracio()"]');
+                    if (btnValoracio) {
+                        btnValoracio.className = 'llibre-btn rate me-3';
+                        btnValoracio.disabled = false;
+                        btnValoracio.textContent = 'Afegir una valoració';
+                        btnValoracio.onclick = mostrarFormulariValoracio;
+                    }
+
+                    // Si no hay más valoraciones, mostrar el mensaje
+                    const container = document.getElementById('valoracions-container');
+                    if (!container.children.length) {
+                        container.innerHTML = '<p class="text-muted" id="no-valoracions">Encara no hi ha valoracions.</p>';
+                    }
+                } else {
+                    alert(data.error || 'Hi ha hagut un error en eliminar la valoració');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Hi ha hagut un error en eliminar la valoració');
+            });
+        }
+    </script>
 @endsection
 <style>
     /* Importar Google Fonts */

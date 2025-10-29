@@ -36,7 +36,7 @@ class Llibre extends Model
     public function llibresValorats()
     {
         return $this->belongsToMany(User::class, 'llibre_user')
-            ->withPivot('nota', 'valoracio', 'created_at')
+            ->withPivot('id', 'nota', 'valoracio', 'created_at')
             ->withTimestamps();
     }   
 }

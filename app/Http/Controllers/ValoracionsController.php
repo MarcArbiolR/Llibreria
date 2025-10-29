@@ -6,6 +6,8 @@ use App\Models\Llibre;
 use App\Models\Valoracio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ValoracionsController extends Controller
 {
@@ -35,39 +37,89 @@ class ValoracionsController extends Controller
 
     public function new(Request $request)
     {
-        // Validem que l'usuari autenticat coincideixi amb el user_id enviat
-        if (Auth::id() != $request->input('user_id')) {
-            return redirect()->back()->with('error', 'No pots crear una valoració per a un altre usuari.');
+        try {
+            // Validem que l'usuari autenticat coincideixi amb el user_id enviat
+            if (Auth::id() != $request->input('user_id')) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'No pots crear una valoració per a un altre usuari.'
+                ], 403);
+            }
+
+            // Comprovar si l'usuari ja ha valorat aquest llibre
+            $hasValoracio = Valoracio::where('user_id', $request->input('user_id'))
+                ->where('llibre_id', $request->input('llibre_id'))
+                ->exists();
+
+            if ($hasValoracio) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'No pots crear una nova valoració perquè ja n\'has fet una.'
+                ], 400);
+            }
+
+            // Validació de les dades rebudes
+            $validated = $request->validate([
+                'user_id' => 'required|integer|exists:users,id',
+                'llibre_id' => 'required|integer|exists:llibre,id',
+                'nota' => 'required|integer|min:1|max:10',
+                'valoracio' => 'required|string|max:1000',
+            ]);
+
+            // Desar la valoració a la base de dades
+            $valoracio = new Valoracio();
+            $valoracio->user_id = $validated['user_id'];
+            $valoracio->llibre_id = $validated['llibre_id'];
+            $valoracio->nota = $validated['nota'];
+            $valoracio->valoracio = $validated['valoracio'];
+            $valoracio->save();
+
+            // Obtenir les dades necessàries per actualitzar la vista
+            $user = Auth::user();
+            $estrelles = round($valoracio->nota / 2);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Valoració creada correctament!',
+                'valoracio' => [
+                    'userName' => $user->name,
+                    'data' => now()->format('d/m/Y'),
+                    'nota' => $valoracio->nota,
+                    'estrelles' => $estrelles,
+                    'text' => $valoracio->valoracio,
+                    'id' => $valoracio->id
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Hi ha hagut un error en crear la valoració: ' . $e->getMessage()
+            ], 500);
         }
+    }
 
-        // Comprovar si l'usuari ja ha valorat aquest llibre
-        $hasValoracio = Valoracio::where('user_id', $request->input('user_id'))
-            ->where('llibre_id', $request->input('llibre_id'))
-            ->exists();
-
-        if ($hasValoracio) {
-            return redirect()->route('crud.show', $request->input('llibre_id'))
-                ->with('error', 'No pots crear una nova valoració perquè ja n\'has fet una.');
+    public function destroy($id)
+    {
+        try {
+            $deleted = DB::table('llibre_user')->where('id', $id)->delete();
+            
+            if ($deleted) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Valoració eliminada correctament!'
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'No s\'ha pogut trobar la valoració amb ID: ' . $id
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error al eliminar valoració: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'error' => 'Error al eliminar la valoració. ID: ' . $id . '. Error: ' . $e->getMessage()
+            ], 500);
         }
-
-        // Validació de les dades rebudes
-        $validated = $request->validate([
-            'user_id' => 'required|integer|exists:users,id',
-            'llibre_id' => 'required|integer|exists:llibre,id',
-            'nota' => 'required|integer|min:1|max:10',
-            'valoracio' => 'required|string|max:1000',
-        ]);
-
-        // Desar la valoració a la base de dades
-        Valoracio::create([
-            'user_id' => $validated['user_id'],
-            'llibre_id' => $validated['llibre_id'],
-            'nota' => $validated['nota'],
-            'valoracio' => $validated['valoracio'],
-        ]);
-
-        // Redirecció a la vista del llibre concret
-        return redirect()->route('crud.show', $validated['llibre_id'])
-            ->with('success', 'Valoració creada correctament!');
     }
 }
