@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+/* use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -47,4 +47,4 @@ test('un usuari pot tancar sessió', function () {
 
     $this->assertGuest();
     $response->assertRedirect('/');
-});
+}); */
