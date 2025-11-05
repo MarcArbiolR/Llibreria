@@ -15,6 +15,12 @@ Route::get('/', function () {
         'backgroundImage' => $llibreDestacat?->imatge ?? null
     ]);
 });
+Route::resource('llibres', LlibreController::class)->withoutMiddleware(['auth']);
+// Rutes per als tests (sense auth)
+Route::post('/llibres/new', [LlibreController::class, 'new']);
+Route::delete('/llibres/delete/{id}', [LlibreController::class, 'delete']);
+
+
 Route::get('/registar', [UserController::class, 'registar'])->name('users.register');
 Route::post('/registat', [UserController::class, 'registrat'])->name('users.registrat');
 
