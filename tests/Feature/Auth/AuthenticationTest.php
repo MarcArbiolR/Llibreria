@@ -1,38 +1,47 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
-test('login screen can be rendered', function () {
+uses(RefreshDatabase::class);
+
+test('la pàgina de login es pot mostrar', function () {
     $response = $this->get('/login');
 
     $response->assertStatus(200);
 });
 
-test('users can authenticate using the login screen', function () {
-    $user = User::factory()->create();
+test('els usuaris es poden autenticar des del formulari de login', function () {
+    $user = User::factory()->create([
+        'password' => bcrypt('password'),
+    ]);
 
     $response = $this->post('/login', [
         'email' => $user->email,
         'password' => 'password',
     ]);
 
-    $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+    $this->assertAuthenticatedAs($user);
+    $response->assertRedirect(route('dashboard'));
 });
 
-test('users can not authenticate with invalid password', function () {
-    $user = User::factory()->create();
+test('no es pot autenticar amb una contrasenya incorrecta', function () {
+    $user = User::factory()->create([
+        'password' => bcrypt('password'),
+    ]);
 
     $this->post('/login', [
         'email' => $user->email,
-        'password' => 'wrong-password',
+        'password' => 'contraseña-incorrecta',
     ]);
 
     $this->assertGuest();
 });
 
-test('users can logout', function () {
-    $user = User::factory()->create();
+test('un usuari pot tancar sessió', function () {
+    $user = User::factory()->create([
+        'password' => bcrypt('password'),
+    ]);
 
     $response = $this->actingAs($user)->post('/logout');
 
