@@ -1,4 +1,4 @@
-name: auto-merge
+name: Auto Merge DWM into main
 
 on:
   workflow_run:
@@ -24,9 +24,9 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
-      - name: Fetch and merge branches
+      - name: Merge DWM into main
         run: |
           git fetch origin
           git checkout main
-          git merge origin/DWM --no-ff -m "auto-merge"
+          git merge origin/DWM --no-ff -m "Auto-merge DWM -> main"
           git push origin main
