@@ -1,4 +1,4 @@
-name: Auto Merge DWM into main
+name: auto-merge
 
 on:
   workflow_run:
