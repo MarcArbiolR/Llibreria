@@ -24,7 +24,7 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
-      - name: Merge DWM into main
+      - name: Fetch and merge branches
         run: |
           git fetch origin
           git checkout main
