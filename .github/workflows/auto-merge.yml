@@ -1,19 +1,17 @@
-name: auto-merge
+name: Auto Merge DWM into main
 
 on:
-  push:
-    branches:
-      - DWM
+  workflow_run:
+    workflows: ["CI Laravel"]
+    types:
+      - completed
 
 jobs:
-  run-ci:
-    uses: ./.github/workflows/ci-laravel.yml
-    secrets: inherit
-
   merge:
-    needs: run-ci
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'DWM'
     runs-on: ubuntu-latest
-    if: always() && needs.run-ci.result == 'success'
 
     steps:
       - name: Checkout repo
@@ -30,5 +28,5 @@ jobs:
         run: |
           git fetch origin
           git checkout main
-          git merge origin/DWM --no-ff -m "auto-merge"
+          git merge origin/DWM --no-ff -m "Auto-merge DWM -> main"
           git push origin main
