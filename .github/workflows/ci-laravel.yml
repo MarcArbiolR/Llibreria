@@ -1,10 +1,7 @@
 name: CI Laravel
 
 on:
-  push:
-    branches: [ main, master, develop ]
-  pull_request:
-    branches: [ main, master, develop ]
+  workflow_call:
 
 jobs:
   laravel-tests:
