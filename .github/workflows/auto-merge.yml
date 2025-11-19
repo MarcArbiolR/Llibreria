@@ -1,4 +1,4 @@
-name: Auto Merge DWM → main
+name: auto-merge
 
 on:
   push:
