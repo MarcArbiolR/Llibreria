@@ -5,8 +5,10 @@ on:
     workflows: ["CI Laravel"]
     types:
       - completed
+
 permissions:
   contents: write
+
 jobs:
   merge:
     if: >
@@ -15,9 +17,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          token: ${{ github.token }}
           fetch-depth: 0
 
       - name: Configure Git
@@ -25,7 +28,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Fetch and merge branches preferring DWM changes
+      - name: Fetch and merge DWM into main (prefer DWM changes)
         run: |
           git fetch origin
           git checkout main
