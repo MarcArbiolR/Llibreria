@@ -2,27 +2,13 @@ name: CI Laravel
 
 on:
   push:
-    branches: [ main, master, develop ]
+    branches: [ main, master, develop, DWM ]
   pull_request:
     branches: [ main, master, develop ]
 
 jobs:
   laravel-tests:
     runs-on: ubuntu-latest
-
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: laravel
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping -h localhost"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
 
     steps:
       - name: Checkout repository
@@ -32,7 +18,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.2
-          extensions: mbstring, intl, pdo, pdo_sqlite, pdo_mysql
+          extensions: mbstring, intl, pdo, pdo_sqlite
           coverage: none
 
       - name: Install Composer dependencies
@@ -41,16 +27,21 @@ jobs:
       - name: Copy .env file
         run: cp .env.example .env
 
-      - name: Generate application key
+      - name: Generate app key
         run: php artisan key:generate
 
-      - name: Set up SQLite database for tests
+      - name: Create SQLite database
         run: |
           mkdir -p database
           touch database/database.sqlite
-          php artisan migrate --env=testing --database=sqlite --force
 
-      - name: Run Laravel tests
+      - name: Run migrations in SQLite
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
+        run: php artisan migrate --force
+
+      - name: Run tests
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
