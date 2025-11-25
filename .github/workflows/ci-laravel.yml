@@ -38,7 +38,7 @@ jobs:
       - name: Run migrations in SQLite
         env:
           DB_CONNECTION: sqlite
-          DB_DATABASE: database/database.sqlite
+          DB_DATABASE: database/database.sqlite 
         run: php artisan migrate --force
 
       - name: Run tests
