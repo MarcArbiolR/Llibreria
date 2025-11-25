@@ -6,7 +6,7 @@ on:
     types:
       - completed
 
-permissions:             # <-- Nivel superior
+permissions:
   contents: write
 
 jobs:
@@ -17,7 +17,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Debug inputs
+        run: |
+          echo "Conclusion: ${{ github.event.workflow_run.conclusion }}"
+          echo "Head branch: ${{ github.event.workflow_run.head_branch }}"
+
+      - name: Checkout repo with PAT
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_TOKEN }}
