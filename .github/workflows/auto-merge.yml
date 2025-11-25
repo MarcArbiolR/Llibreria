@@ -11,7 +11,6 @@ permissions:
 
 jobs:
   merge:
-    # Ejecutar solo si el CI terminó OK y la rama es DWM o dwm
     if: >
       github.event.workflow_run.conclusion == 'success' &&
       (github.event.workflow_run.head_branch == 'DWM' || github.event.workflow_run.head_branch == 'dwm')
@@ -23,9 +22,10 @@ jobs:
           echo "Conclusion: ${{ github.event.workflow_run.conclusion }}"
           echo "Head branch: ${{ github.event.workflow_run.head_branch }}"
 
-      - name: Checkout repo
+      - name: Checkout repo with PAT
         uses: actions/checkout@v4
         with:
+          token: ${{ secrets.GH_TOKEN }}
           fetch-depth: 0
 
       - name: Configure Git
