@@ -13,15 +13,10 @@ jobs:
   merge:
     if: >
       github.event.workflow_run.conclusion == 'success' &&
-      (github.event.workflow_run.head_branch == 'DWM' || github.event.workflow_run.head_branch == 'dwm')
+      github.event.workflow_run.head_branch == 'DWM'
     runs-on: ubuntu-latest
 
     steps:
-      - name: Debug inputs
-        run: |
-          echo "Conclusion: ${{ github.event.workflow_run.conclusion }}"
-          echo "Head branch: ${{ github.event.workflow_run.head_branch }}"
-
       - name: Checkout repo with PAT
         uses: actions/checkout@v4
         with:
