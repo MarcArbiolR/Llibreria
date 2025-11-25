@@ -272,43 +272,10 @@
 
     <div class="hero-section">
         <div class="container">
-            <h1 class="text-center">Biblioteca de Hola</h1>
+            <h1 class="text-center">Biblioteca de H</h1>
             <p class="subtitle text-center">Endinsa't en un univers de llibres, coneixement i creativitat. La teva
                 biblioteca digital de confiança.</p>
 
-                {{-- name: Auto Merge DWM into main
-
-on:
-  workflow_run:
-    workflows: ["CI Laravel"]
-    types:
-      - completed
-
-jobs:
-  merge:
-    if: >
-      github.event.workflow_run.conclusion == 'success' &&
-      (github.event.workflow_run.head_branch == 'DWM' || github.event.workflow_run.head_branch == 'dwm')
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Configure Git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Fetch and merge branches preferring DWM changes
-        run: |
-          git fetch origin
-          git checkout main
-          git merge -X theirs origin/DWM -m "Auto-merge DWM -> main (prefer DWM changes)"
-          git push origin main
- --}}
             <div class="row g-4">
                 <!-- Botons de llibres -->
                 <div class="col-lg-6 d-flex justify-content-center">
