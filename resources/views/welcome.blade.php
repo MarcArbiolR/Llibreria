@@ -272,7 +272,7 @@
 
     <div class="hero-section">
         <div class="container">
-            <h1 class="text-center">Biblioteca de Patri</h1>
+            <h1 class="text-center">Biblioteca de Put</h1>
             <p class="subtitle text-center">Endinsa't en un univers de llibres, coneixement i creativitat. La teva
                 biblioteca digital de confiança.</p>
 
