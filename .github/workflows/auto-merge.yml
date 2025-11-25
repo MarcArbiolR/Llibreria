@@ -1,13 +1,14 @@
 name: Auto Merge DWM into main
 
+# Give contents write at top-level as an extra hint (still use PAT)
+permissions:
+  contents: write
+
 on:
   workflow_run:
     workflows: ["CI Laravel"]
     types:
       - completed
-
-permissions:
-  contents: write
 
 jobs:
   merge:
@@ -17,18 +18,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repo using PAT
         uses: actions/checkout@v4
         with:
-          token: ${{ github.token }}
           fetch-depth: 0
+          token: ${{ secrets.REPO_WRITE_TOKEN }}
+          persist-credentials: true
 
       - name: Configure Git
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Fetch and merge DWM into main (prefer DWM changes)
+      - name: Fetch and merge branches preferring DWM changes
         run: |
           git fetch origin
           git checkout main
