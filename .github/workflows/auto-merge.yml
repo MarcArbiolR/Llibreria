@@ -13,7 +13,7 @@ jobs:
   merge:
     if: >
       github.event.workflow_run.conclusion == 'success' &&
-      contains('DWM,dwm', github.event.workflow_run.head_branch)
+      github.event.workflow_run.head_branch == 'DWM'
     runs-on: ubuntu-latest
 
     steps:
