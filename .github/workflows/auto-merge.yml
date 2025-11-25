@@ -5,6 +5,9 @@ on:
     workflows: ["CI Laravel"]
     types:
       - completed
+      
+permissions:
+  contents: write
 
 jobs:
   merge:
