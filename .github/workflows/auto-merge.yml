@@ -3,17 +3,17 @@ name: Auto Merge DWM into main
 on:
   workflow_run:
     workflows: ["CI Laravel"]
-    types:
-      - completed
-      
+    types: [completed]
+
 permissions:
   contents: write
+  actions: read
 
 jobs:
   merge:
     if: >
       github.event.workflow_run.conclusion == 'success' &&
-      (github.event.workflow_run.head_branch == 'DWM' || github.event.workflow_run.head_branch == 'dwm')
+      contains(github.event.workflow_run.head_branch, 'DWM')
     runs-on: ubuntu-latest
 
     steps:
@@ -27,9 +27,13 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Fetch and merge branches preferring DWM changes
+      - name: Fetch branches
         run: |
-          git fetch origin
+          git fetch origin main
+          git fetch origin DWM
+
+      - name: Merge DWM into main
+        run: |
           git checkout main
-          git merge -X theirs origin/DWM -m "Auto-merge DWM -> main (prefer DWM changes)"
+          git merge origin/DWM -m "Auto-merge DWM -> main"
           git push origin main
