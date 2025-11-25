@@ -243,7 +243,7 @@
 
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Biblioteca de Bateaa</a>
+            <a class="navbar-brand" href="#">Biblioteca de Gandesa</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -272,7 +272,7 @@
 
     <div class="hero-section">
         <div class="container">
-            <h1 class="text-center">Biblioteca de Batea</h1>
+            <h1 class="text-center">Biblioteca de Rams</h1>
             <p class="subtitle text-center">Endinsa't en un univers de llibres, coneixement i creativitat. La teva
                 biblioteca digital de confiança.</p>
 

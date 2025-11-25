@@ -11,12 +11,18 @@ permissions:
 
 jobs:
   merge:
+    # Ejecutar solo si el CI terminó OK y la rama es DWM o dwm
     if: >
       github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'DWM'
+      (github.event.workflow_run.head_branch == 'DWM' || github.event.workflow_run.head_branch == 'dwm')
     runs-on: ubuntu-latest
 
     steps:
+      - name: Debug inputs
+        run: |
+          echo "Conclusion: ${{ github.event.workflow_run.conclusion }}"
+          echo "Head branch: ${{ github.event.workflow_run.head_branch }}"
+
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
