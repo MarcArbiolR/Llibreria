@@ -21,13 +21,13 @@ jobs:
         run: |
           echo "Conclusion: ${{ github.event.workflow_run.conclusion }}"
           echo "Head branch: ${{ github.event.workflow_run.head_branch }}"
-
+          
       - name: Configure Git
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Fetch and merge branches preferring DWM changes
+      - name: Fetch and merge DWM into main
         run: |
           git fetch origin
           git checkout main
