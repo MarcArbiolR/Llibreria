@@ -27,17 +27,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Configurar Git
+      # 2️⃣ Configurar Git
       - name: Configure Git
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      # Instalar dependencias PHP
+      # 3️⃣ Instalar dependencias PHP
       - name: Install Composer dependencies
         run: composer install --no-interaction --no-progress --prefer-dist
 
-      # Copiar .env y configurar Laravel
+      # 4️⃣ Copiar .env y configurar Laravel
       - name: Setup Laravel
         run: |
           cp .env.example .env
@@ -46,11 +46,11 @@ jobs:
           touch database/database.sqlite
           php artisan migrate --force
 
-      # Ejecutar tests
+      # 5️⃣ Ejecutar tests
       - name: Run Laravel tests
         run: php artisan test --colors=always
 
-      # Merge a main solo si los tests pasan
+      # 6️⃣ Merge a main solo si los tests pasan
       - name: Merge DWM into main
         if: success()
         run: |
