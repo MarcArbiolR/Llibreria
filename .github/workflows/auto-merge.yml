@@ -9,28 +9,35 @@ permissions:
   contents: write
 
 jobs:
-  test-and-merge:
+  merge:
+    # Ejecutar solo si el CI terminó OK y la rama es DWM o dwm
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      (github.event.workflow_run.head_branch == 'DWM' || github.event.workflow_run.head_branch == 'dwm')
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout la rama DWM usando PAT
-      - name: Checkout repo with PAT
+      - name: Debug inputs
+        run: |
+          echo "Conclusion: ${{ github.event.workflow_run.conclusion }}"
+          echo "Head branch: ${{ github.event.workflow_run.head_branch }}"
+
+      - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GH_TOKEN }}  # PAT con repo + workflows
           fetch-depth: 0
 
-      # 2️⃣ Configurar Git
+      # Configurar Git
       - name: Configure Git
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      # 3️⃣ Instalar dependencias PHP
+      # Instalar dependencias PHP
       - name: Install Composer dependencies
         run: composer install --no-interaction --no-progress --prefer-dist
 
-      # 4️⃣ Copiar .env y configurar Laravel
+      # Copiar .env y configurar Laravel
       - name: Setup Laravel
         run: |
           cp .env.example .env
@@ -39,11 +46,11 @@ jobs:
           touch database/database.sqlite
           php artisan migrate --force
 
-      # 5️⃣ Ejecutar tests
+      # Ejecutar tests
       - name: Run Laravel tests
         run: php artisan test --colors=always
 
-      # 6️⃣ Merge a main solo si los tests pasan
+      # Merge a main solo si los tests pasan
       - name: Merge DWM into main
         if: success()
         run: |
@@ -52,8 +59,3 @@ jobs:
           git merge -X theirs origin/DWM -m "Auto-merge DWM -> main (prefer DWM changes)"
           git push origin main
 
-      # 7️⃣ Opcional: borrar la rama DWM después del merge
-      - name: Delete DWM branch
-        if: success()
-        run: |
-          git push origin --delete DWM || echo "Branch DWM already deleted"
